@@ -72,7 +72,16 @@ defmodule Cog.Chat.Slack.Connector do
     unless message_size < 15000 do
       Logger.info("WARNING: Large message (#{message_size} bytes) detected. Slack might truncate or drop it entirely.")
     end
-    result = Slack.Web.Chat.post_message(target, message, %{token: token, as_user: true})
+
+    attachments = [
+      %{
+        "fallback" => message,
+        "text" => message,
+        "mrkdwn_in": [ "text" ]
+      }
+    ] |> Poison.encode!
+
+    result = Slack.Web.Chat.post_message(target, %{attachments: attachments, token: token, as_user: true})
     send(sender, {ref, result})
     :ok
   end
