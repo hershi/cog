@@ -13,6 +13,19 @@ else
 end
 
 # ========================================================================
+# Set this to true to disable bundle version checking. Cog will overwrite
+# bundles with the same version instead of requiring a new version number.
+# NOTE: This should only ever be set for development. Setting this in a
+# production environment could cause unexpected behavior.
+# ========================================================================
+
+if System.get_env("DISABLE_BUNDLE_VERSION_ENFORCEMENT") do
+  config :cog, :enforce_bundle_version, false
+else
+  config :cog, :enforce_bundle_version, true
+end
+
+# ========================================================================
 # Embedded Command Bundle Version (for built-in commands)
 # NOTE: Do not change this value unless you know what you're doing.
 # ========================================================================
